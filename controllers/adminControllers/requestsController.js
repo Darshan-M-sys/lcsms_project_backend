@@ -12,22 +12,28 @@ exports.getAllRequests=async(req,res)=>{
     res.state(500).json({message:error.message})
   }
 }
-exports.getRequestById=async(req,res)=>{
+exports.getRequestById = async (req, res) => {
   try {
-    const {id}=req.params;
-     const requests = await ServiceRequest.findOne({_id:id})
-      .sort({ createdAt: -1 })
-      const dataObject=requests.toObject()
-      if(requests.assignedTechnician){
-     const technician= await technicianModel.findOne({_id:requests.assignedTechnician}).populate("userId"); 
-     dataObject['technician']= technician || null; 
-      }
-     res.status(200).json({data:dataObject});
+    const { id } = req.params;
+
+    const request = await ServiceRequest.findById(id)
+      .populate("messages.senderId") // 🔥 populate user inside messages
+      .populate({
+        path: "assignedTechnician",
+        populate: { path: "userId" }, // 🔥 technician → user
+      });
+
+    if (!request) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    res.status(200).json({ data: request });
+
   } catch (error) {
-    console.log(error.message)
-    res.status(500).json({message:error.message})
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
 
 exports.handleAssignTechnician = async (req, res) => {
@@ -106,3 +112,20 @@ exports.updateRequestStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.addMessages=async(req,res)=>{
+  try {
+    const {id}=req.params;
+    const {text}=req.body;
+    const request= await ServiceRequest.findOne({_id:id});
+    const senderId= req.session.userData.id;
+      request.messages.push({
+        senderId:senderId,
+        text:text
+      })
+      await request.save();
+      res.status(200).json({message:"Send",success:true});
+  } catch (error) {
+   res.status(500).json({message:error.message}) 
+  }
+}

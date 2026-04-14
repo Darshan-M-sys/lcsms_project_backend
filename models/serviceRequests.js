@@ -78,9 +78,10 @@ const serviceRequestSchema = new mongoose.Schema(
     // 💬 CHAT SYSTEM
     messages: [
       {
-        sender: {
-          type: String,
-          enum: ["Customer", "Technician", "Admin"],
+        senderId:{
+       type:mongoose.Schema.Types.ObjectId,
+       ref:"User",
+       required:true
         },
         text: { type: String },
         createdAt: { type: Date, default: Date.now },

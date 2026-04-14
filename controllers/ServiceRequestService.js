@@ -67,25 +67,27 @@ exports.getMyRequests = async (req, res) => {
 
 
 // 🔥 3. GET SINGLE REQUEST DETAILS
+
 exports.getRequestById = async (req, res) => {
   try {
     const { id } = req.params;
 
-const request = await ServiceRequest.findById(id)
-  .populate("assignedTechnician", "name email")
-  .populate("createdBy", "name email");
-
+    const request = await ServiceRequest.findById(id)
+      .populate("messages.senderId") // 🔥 populate user inside messages
+      .populate({
+        path: "assignedTechnician",
+        populate: { path: "userId" }, // 🔥 technician → user
+      });
 
     if (!request) {
       return res.status(404).json({ message: "Request not found" });
     }
 
-    res.json({
-      success: true,
-      data: request,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(200).json({ data: request });
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -125,37 +127,6 @@ exports.cancelRequest = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-
-
-// 🔥 5. ADD MESSAGE (CHAT)
-exports.addMessage = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { text } = req.body;
-
-    const request = await ServiceRequest.findById(id);
-
-    if (!request) {
-      return res.status(404).json({ message: "Not found" });
-    }
-
-    request.messages.push({
-      sender: "Customer",
-      text,
-    });
-
-    await request.save();
-
-    res.json({
-      success: true,
-      message: "Message sent",
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 
 
 // 🔥 6. ADD RATING & REVIEW

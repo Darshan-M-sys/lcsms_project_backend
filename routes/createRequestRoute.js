@@ -10,6 +10,9 @@ const {
   getRequestById,
 } = require("../controllers/ServiceRequestService");
 const { upload } = require("../middlewares/ImageUploadMiddleware");
+const { addMessages } = require("../controllers/adminControllers/requestsController");
+const isCustomer = require("../middlewares/isCustomer");
+const { getBill } = require("../controllers/CreateBillController");
 
 // 🔥 CREATE SERVICE REQUEST
 createRequestRouter.post(
@@ -18,8 +21,6 @@ createRequestRouter.post(
   upload.array("images", 5),
   createRequest
 );
-
-
 createRequestRouter.get(
   "/my/requests",
   isAuthenticated,
@@ -30,6 +31,12 @@ createRequestRouter.get(
   isAuthenticated,
  getRequestById
 );
+createRequestRouter.get(
+  "/get/bill/:requestId",
+  isAuthenticated,isCustomer,
+ getBill
+);
+
 
 module.exports = createRequestRouter;
 upload

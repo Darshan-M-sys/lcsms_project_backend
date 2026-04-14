@@ -6,7 +6,8 @@ const { addTechnician, updateTechnician } = require("../controllers/adminControl
 const isAuthenticated = require("../middlewares/isAuthenticated");
 const isAdmin = require("../middlewares/isAdminMiddleware");
 const { getAllTechnicians, getSingleTechnicians, deleteTechnician } = require("../controllers/adminControllers/getAllTechnicianController");
-const { getAllRequests, getRequestById, handleAssignTechnician, updateRequestStatus } = require("../controllers/adminControllers/requestsController");
+const { getAllRequests, getRequestById, handleAssignTechnician, updateRequestStatus, addMessages } = require("../controllers/adminControllers/requestsController");
+const { createBill, getBill, updateBillStatus } = require("../controllers/CreateBillController");
 
 adminRouter.post("/login",AdminLogin);
 // add technician
@@ -21,5 +22,11 @@ adminRouter.get("/all/requests",isAuthenticated,isAdmin,getAllRequests);
 adminRouter.get("/single/requests/:id",isAuthenticated,isAdmin,getRequestById);
 adminRouter.put("/assign/technician/:requestId",isAuthenticated,isAdmin,handleAssignTechnician);
 adminRouter.put("/status/update/:requestId",isAuthenticated,isAdmin,updateRequestStatus);
+adminRouter.put("/add/message/:id",isAuthenticated,addMessages);
+// bill
+adminRouter.post("/create/bill/:requestId",isAuthenticated, isAdmin,createBill);
+adminRouter.get("/get/bill/:requestId",isAuthenticated, isAdmin,getBill);
+adminRouter.put("/status/bill/:id",isAuthenticated,isAdmin,updateBillStatus);
+
 module.exports = adminRouter
 
