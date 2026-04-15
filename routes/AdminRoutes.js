@@ -8,6 +8,7 @@ const isAdmin = require("../middlewares/isAdminMiddleware");
 const { getAllTechnicians, getSingleTechnicians, deleteTechnician } = require("../controllers/adminControllers/getAllTechnicianController");
 const { getAllRequests, getRequestById, handleAssignTechnician, updateRequestStatus, addMessages } = require("../controllers/adminControllers/requestsController");
 const { createBill, getBill, updateBillStatus } = require("../controllers/CreateBillController");
+const { getAllCustomer, deleteCustomer } = require("../controllers/getAllCustomer");
 
 adminRouter.post("/login",AdminLogin);
 // add technician
@@ -27,6 +28,10 @@ adminRouter.put("/add/message/:id",isAuthenticated,addMessages);
 adminRouter.post("/create/bill/:requestId",isAuthenticated, isAdmin,createBill);
 adminRouter.get("/get/bill/:requestId",isAuthenticated, isAdmin,getBill);
 adminRouter.put("/status/bill/:id",isAuthenticated,isAdmin,updateBillStatus);
+
+// customers
+adminRouter.get("/get/all/customer",isAuthenticated,isAdmin,getAllCustomer);
+adminRouter.delete("/delete/customer/:customerId",isAuthenticated,isAdmin,deleteCustomer);
 
 module.exports = adminRouter
 

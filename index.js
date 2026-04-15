@@ -5,6 +5,7 @@ const sessions = require('express-session');
 require('dotenv').config();
 const {MongoStore} = require('connect-mongo');
 const AuthRouter = require('./routes/authRoute');
+const path= require("path")
 const createRequestRouter = require('./routes/createRequestRoute');
 const adminRouter = require('./routes/AdminRoutes');
 const app = express();
@@ -17,6 +18,10 @@ credentials:true
 connectDB();
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 app.use(sessions({
   secret: process.env.SESSION_SECRET,
   resave: false,

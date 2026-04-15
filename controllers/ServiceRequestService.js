@@ -11,7 +11,7 @@ exports.createRequest = async (req, res) => {
 
     // 🖼️ Handle images (multer)
     const images = req.files?.map((file) => ({
-      url: `/uploads/${file.filename}`,
+      url: `http://localhost:5000/uploads/${file.filename}`,
     })) || [];
 
     const newRequest = new ServiceRequest({
