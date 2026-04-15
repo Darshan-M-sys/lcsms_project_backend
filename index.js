@@ -8,6 +8,7 @@ const AuthRouter = require('./routes/authRoute');
 const path= require("path")
 const createRequestRouter = require('./routes/createRequestRoute');
 const adminRouter = require('./routes/AdminRoutes');
+const technicianRouter = require('./routes/technicianRoute');
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use('/api/auth',AuthRouter);
 app.use('/api/services/request',createRequestRouter);
 // admin routes
 app.use("/api/admin",adminRouter);
+app.use("/api/technician",technicianRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
