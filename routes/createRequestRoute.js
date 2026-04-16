@@ -10,7 +10,7 @@ const {
   getRequestById,
 } = require("../controllers/ServiceRequestService");
 const { upload } = require("../middlewares/ImageUploadMiddleware");
-const { addMessages } = require("../controllers/adminControllers/requestsController");
+const { addMessages, deleteRequest } = require("../controllers/adminControllers/requestsController");
 const isCustomer = require("../middlewares/isCustomer");
 const { getBill } = require("../controllers/CreateBillController");
 
@@ -35,6 +35,11 @@ createRequestRouter.get(
   "/get/bill/:requestId",
   isAuthenticated,isCustomer,
  getBill
+);
+createRequestRouter.delete(
+  "/delete/request/:requestId",
+  isAuthenticated,isCustomer,
+ deleteRequest
 );
 
 

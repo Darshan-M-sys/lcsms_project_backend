@@ -2,9 +2,14 @@ const express= require("express");
 const isTechnician = require("../middlewares/isTechnician");
 const { getAllAssignedRequests } = require("../controllers/technicianController/AssignedRequests");
 const isAuthenticated= require("../middlewares/isAuthenticated");
-const { getRequestById } = require("../controllers/adminControllers/requestsController");
+const { getRequestById, updateRequestStatus, deleteRequest } = require("../controllers/adminControllers/requestsController");
+const { createBill, getBill, updateBillStatus } = require("../controllers/CreateBillController");
 const technicianRouter= express.Router();
-
-technicianRouter.get("/get/all/assigned/requests",isAuthenticated,isTechnician,getAllAssignedRequests)
-technicianRouter.get("/get/request/:id",isAuthenticated,isTechnician,getRequestById)
-module.exports=technicianRouter
+technicianRouter.get("/get/all/assigned/requests",isAuthenticated,isTechnician,getAllAssignedRequests);
+technicianRouter.get("/get/request/:id",isAuthenticated,isTechnician,getRequestById);
+technicianRouter.put("/request/status/update/:requestId",isAuthenticated,isTechnician,updateRequestStatus);
+technicianRouter.post("/create/bill/:requestId",isAuthenticated,isTechnician,createBill);
+technicianRouter.get("/get/bill/:requestId",isAuthenticated,isTechnician,getBill);
+technicianRouter.put("/update/bill/:id",isAuthenticated,isTechnician,updateBillStatus);
+technicianRouter.delete("/delete/request/:requestId",isAuthenticated,isTechnician,deleteRequest);
+module.exports=technicianRouter;

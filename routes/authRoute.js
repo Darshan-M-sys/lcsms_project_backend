@@ -14,7 +14,7 @@ AuthRouter.post('/logout', (req, res) => {
       return res.status(500).json({ message: 'Server error' });
     }
     res.clearCookie('connect.sid'); 
-    res.status(200).json({ message: 'Logout successful',success:true });
+    res.status(200).json({ success:true ,message: 'Logout successful'});
   }
 );
 });
