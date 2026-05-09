@@ -9,6 +9,7 @@ const path= require("path")
 const createRequestRouter = require('./routes/createRequestRoute');
 const adminRouter = require('./routes/AdminRoutes');
 const technicianRouter = require('./routes/technicianRoute');
+const customerMessageRouter = require('./routes/cusomerMessageRoute');
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
@@ -34,6 +35,7 @@ app.use(sessions({
 
 app.use('/api/auth',AuthRouter);
 app.use('/api/services/request',createRequestRouter);
+app.use('/api/customer/message', customerMessageRouter);
 // admin routes
 app.use("/api/admin",adminRouter);
 app.use("/api/technician",technicianRouter);

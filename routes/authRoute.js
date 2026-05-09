@@ -4,9 +4,11 @@ const { loginUser } = require('../controllers/loginController');
 const { registerUser } = require('../controllers/registerController');
 const { getUser } = require('../controllers/GetUserController');
 const isAuthenticated = require('../middlewares/isAuthenticated');
+const { resetPassword } = require('../controllers/resetPasswordController');
 AuthRouter.post('/register', registerUser);
 AuthRouter.post('/login', loginUser);
 AuthRouter.get('/me',isAuthenticated, getUser);
+AuthRouter.post("/reset/password", resetPassword);
 AuthRouter.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {  
